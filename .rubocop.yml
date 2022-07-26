@@ -1,0 +1,17 @@
+AllCops:
+  NewCops: disable
+
+Style/Documentation:
+    Enabled: false
+
+Style/BlockComments:
+    Enabled: false
+
+Style/RedundantFetchBlock:
+    Enabled: false
+
+Style/NumericLiterals:
+    Enabled: false
+
+Layout/EmptyLinesAroundBlockBody:
+    Enabled: false
