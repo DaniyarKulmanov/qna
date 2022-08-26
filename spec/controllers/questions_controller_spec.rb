@@ -5,25 +5,14 @@ require 'rails_helper'
 RSpec.describe QuestionsController, type: :controller do
   let(:question) { create(:question) }
 
-  describe 'GET #new' do
-    before { get :new }
-    it 'assigns new Question to @question' do
-      expect(assigns(:question)).to be_a_new(Question)
-    end
-
-    it 'renders new view' do
-      expect(response).to render_template :new
-    end
-  end
-
   describe 'POST #create' do
     context 'with valid attributes' do
       it 'saves new question to database' do
         expect { post :create, params: { question: attributes_for(:question) } }.to change(Question, :count).by(1)
       end
-      it 'redirects to show view' do
+      it 'redirects to show view exposed' do
         post :create, params: { question: attributes_for(:question) }
-        expect(response).to redirect_to assigns(:question)
+        expect(response).to redirect_to question_path(assigns(:exposed_question))
       end
     end
 
