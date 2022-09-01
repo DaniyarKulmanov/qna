@@ -17,8 +17,14 @@ RSpec.describe AnswersController, type: :controller do
       end
     end
 
-    # context 'with invalid attributes'
-    # it 'should not save answer with wrong attributes'
-    # it 're-renders new view'
+    context 'with invalid attributes' do
+      it 'should not save answer with wrong attributes' do
+        expect { post :create, params: { answer: attributes_for(:answer, :wrong), question_id: answer.question.id } }.to_not change(Answer, :count)
+      end
+      it 're-renders new view' do
+        post :create, params: { answer: attributes_for(:answer, :wrong), question_id: answer.question.id }
+        expect(response).to render_template :new
+      end
+    end
   end
 end

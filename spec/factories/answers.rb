@@ -5,5 +5,9 @@ FactoryBot.define do
     body { 'MyText' }
     correct { false }
     question
+
+    trait :wrong do
+      body { nil }
+    end
   end
 end
