@@ -12,7 +12,9 @@ feature 'User can sign in', "
 
     visit new_user_session_path
     fill_in 'Email', with: 'user@test.com'
-    fill_in 'Password', with: '1234678'
+    fill_in 'Password', with: '12345678'
+    click_button 'Log in'
+
     save_and_open_page
     expect(page).to have_content 'Signed in successfully'
   end
