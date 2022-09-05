@@ -30,6 +30,12 @@ feature 'User can create question', "
   end
 
   scenario 'Authorized user asks question with errors'
-  scenario 'Unauthorized user tries to ask question'
+
+  scenario 'Unauthorized user tries to ask question' do
+    visit questions_path
+    click_on 'Ask question'
+
+    expect(page).to have_content I18n.t('devise.failure.unauthenticated')
+  end
 
 end

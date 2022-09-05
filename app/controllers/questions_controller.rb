@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 class QuestionsController < ApplicationController
-  expose :questions, ->{ Question.all }
+  before_action :authenticate_user!, except: %i[index show]
+  expose :questions, -> { Question.all }
   expose :question
 
   def index; end
