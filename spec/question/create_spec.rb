@@ -29,7 +29,18 @@ feature 'User can create question', "
     expect(page).to have_content 'Test text'
   end
 
-  scenario 'Authorized user asks question with errors'
+  scenario 'Authorized user asks question with errors' do
+    fill_in 'Email', with: user.email
+    fill_in 'Password', with: user.password
+    click_on 'Log in'
+
+    visit questions_path
+    click_on 'Ask question'
+
+    click_on 'Ask'
+
+    expect(page).to have_content "Title can't be blank"
+  end
 
   scenario 'Unauthorized user tries to ask question' do
     visit questions_path
