@@ -8,7 +8,8 @@ feature 'User can see all questions', "
   I'd like to see all questions
 " do
 
-  let(:questions) { create_list(:question, 3) }
+  given(:user) { create(:user) }
+  given!(:questions) { create_list(:question, 3) }
 
   scenario 'Unregistered user tries to see all questions' do
     visit questions_path
@@ -20,7 +21,6 @@ feature 'User can see all questions', "
   end
 
   scenario 'Registered user tries to see all questions' do
-    given(:user) { create(:user) }
     sign_in(user)
     visit questions_path
 

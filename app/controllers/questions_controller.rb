@@ -5,7 +5,9 @@ class QuestionsController < ApplicationController
   expose :questions, -> { Question.all }
   expose :question
 
-  def index; end
+  def index
+    questions
+  end
 
   def show; end
 

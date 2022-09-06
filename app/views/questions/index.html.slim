@@ -1,1 +1,12 @@
+table
+  thead
+    tr
+      th 'Title'
+      th 'Body'
+  tbody
+    - questions.each do |question|
+      tr
+        td= question.title
+        td= question.body
+p= questions.count
 p= link_to 'Ask question', new_question_path
