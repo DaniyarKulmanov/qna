@@ -8,15 +8,18 @@ feature 'User can give answer to a question', "
   I'd like to be able answer to question
 " do
 
+  given(:question) { create(:question) }
+
   describe 'Authenticated user' do
     given(:user) { create(:user) }
-    given(:question) { create(:question) }
     given(:answer) { create(:answer) }
 
-    scenario 'tries answer to question' do
+    background do
       sign_in(user)
       visit question_path(question)
+    end
 
+    scenario 'tries answer to question' do
       fill_in 'Body', with: answer.body
       check('Correct').set(answer.correct)
       click_on 'Answer'
@@ -27,14 +30,16 @@ feature 'User can give answer to a question', "
     end
 
     scenario 'tries answer to question and see errors' do
-      sign_in(user)
-      visit question_path(question)
-
       click_on 'Answer'
 
       expect(page).to have_content "Body can't be blank"
     end
   end
 
-  scenario 'Unauthorized user tries answer to question'
+  scenario 'Unauthorized user tries answer to question' do
+    visit question_path(question)
+
+    click_on 'Answer'
+    expect(page).to have_content I18n.t('devise.failure.unauthenticated')
+  end
 end

@@ -1,10 +1,9 @@
 # frozen_string_literal: true
 
 class AnswersController < ApplicationController
+  before_action :authenticate_user!
   expose :question, -> { Question.find(params[:question_id]) }
   expose :answer, parent: :question
-
-  def show; end
 
   def create
     if answer.save
