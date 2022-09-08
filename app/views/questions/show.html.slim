@@ -1,2 +1,21 @@
 h1= question.title
 p= question.body
+
+h1= 'Answer to question'
+= form_with model: [question, question.answers.build ], local: true do |f|
+  = f.label :body
+  = f.text_area :body
+  = f.label :correct
+  = f.check_box :correct
+  = f.submit 'Answer'
+
+table
+  thead
+    tr
+      th 'Body'
+      th 'Correct'
+  tbody
+    - question.answers.each do |answer|
+      tr
+        td= answer.body
+        td= answer.correct
