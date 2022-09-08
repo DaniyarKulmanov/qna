@@ -13,7 +13,7 @@ feature 'User can give answer to a question', "
     given(:question) { create(:question) }
     given(:answer) { create(:answer) }
 
-    scenario 'Authenticated user tries answer to question' do
+    scenario 'tries answer to question' do
       sign_in(user)
       visit question_path(question)
 
@@ -26,7 +26,14 @@ feature 'User can give answer to a question', "
       expect(page).to have_content answer.correct
     end
 
-    scenario 'Authenticated user tries answer to question with errors'
+    scenario 'tries answer to question and see errors' do
+      sign_in(user)
+      visit question_path(question)
+
+      click_on 'Answer'
+
+      expect(page).to have_content "Body can't be blank"
+    end
   end
 
   scenario 'Unauthorized user tries answer to question'

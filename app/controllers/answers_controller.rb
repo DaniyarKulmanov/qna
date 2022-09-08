@@ -8,9 +8,9 @@ class AnswersController < ApplicationController
 
   def create
     if answer.save
-      redirect_to question_path(question), notice: 'Your answer successfully created'
+      redirect_with 'Your answer successfully created'
     else
-      render :new
+      redirect_with answer.errors.full_messages
     end
   end
 
@@ -18,5 +18,9 @@ class AnswersController < ApplicationController
 
   def answer_params
     params.require(:answer).permit(:body, :correct)
+  end
+
+  def redirect_with(notice)
+    redirect_to question_path(question), notice: notice
   end
 end

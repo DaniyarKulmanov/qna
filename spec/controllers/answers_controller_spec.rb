@@ -10,10 +10,10 @@ RSpec.describe AnswersController, type: :controller do
       it 'saves new answer to database' do
         expect { post :create, params: { answer: attributes_for(:answer), question_id: answer.question.id } }.to change(Answer, :count).by(1)
       end
-      it 'redirects to show view' do
+      it 'redirects to question show view' do
         post :create, params: { answer: attributes_for(:answer), question_id: answer.question.id }
 
-        expect(response).to redirect_to question_answer_path(assigns(:exposed_question), assigns(:exposed_answer))
+        expect(response).to redirect_to question_path(assigns(:exposed_question))
       end
     end
 
@@ -21,9 +21,9 @@ RSpec.describe AnswersController, type: :controller do
       it 'should not save answer with wrong attributes' do
         expect { post :create, params: { answer: attributes_for(:answer, :wrong), question_id: answer.question.id } }.to_not change(Answer, :count)
       end
-      it 're-renders new view' do
+      it 'redirects to question show view with errors' do
         post :create, params: { answer: attributes_for(:answer, :wrong), question_id: answer.question.id }
-        expect(response).to render_template :new
+        expect(response).to redirect_to question_path(assigns(:exposed_question))
       end
     end
   end
