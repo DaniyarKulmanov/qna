@@ -8,7 +8,26 @@ feature 'User can sign up', "
   I'd like to be able sign up
 " do
 
-  scenario 'Unregistered user tries to sign up'
-  scenario 'Registered user tries to sign up'
+  given(:user) { create(:user) }
+
+  background { visit new_user_registration_path }
+
+  scenario 'Unregistered user tries to sign up' do
+    fill_in 'Email', with: Faker::Internet.email
+    fill_in 'Password', with: '123456789'
+    fill_in 'Password confirmation', with: '123456789'
+    click_on 'Sign up'
+
+    expect(page).to have_content I18n.t('devise.registrations.signed_up')
+  end
+
+  scenario 'Registered user tries to sign up'do
+    fill_in 'Email', with: user.email
+    fill_in 'Password', with: user.password
+    fill_in 'Password confirmation', with: user.password_confirmation
+    click_on 'Sign up'
+
+    expect(page).to have_content 'Email has already been taken'
+  end
 
 end
