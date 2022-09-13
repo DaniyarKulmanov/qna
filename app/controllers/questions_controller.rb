@@ -9,7 +9,9 @@ class QuestionsController < ApplicationController
     questions
   end
 
-  def show; end
+  def show
+    question
+  end
 
   def create
     if question.save
