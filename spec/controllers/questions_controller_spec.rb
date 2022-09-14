@@ -40,9 +40,10 @@ RSpec.describe QuestionsController, type: :controller do
       it 'saves new question to database' do
         expect { post :create, params: { question: attributes_for(:question) } }.to change(Question, :count).by(1)
       end
-      it 'redirects to show view exposed' do
+      it 'redirects to show view' do
         post :create, params: { question: attributes_for(:question) }
         expect(response).to redirect_to question_path(assigns(:exposed_question))
+        expect(flash[:notice]).to match('Your question successfully created')
       end
     end
 
