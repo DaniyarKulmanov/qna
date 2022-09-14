@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
-  let!(:answer) { create(:answer) }
   let(:user) { create(:user) }
+  let!(:answer) { create(:answer) }
 
   before { login(user) }
 
@@ -32,14 +32,29 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
+    let!(:own_answer) { create(:answer, author: user) }
 
-    it 'deletes the answer' do
-      expect { delete :destroy, params: { id: answer, question_id: answer.question } }.to change(Answer, :count).by(-1)
+    context "Delete some else's answer" do
+      it 'unable to delete' do
+        expect { delete :destroy, params: { id: answer, question_id: answer.question } }.to change(Answer, :count).by(0)
+        expect(flash[:notice]).to match('Only authored answers allowed for deletion')
+      end
+
+      it 'redirects back to question with notice' do
+        delete :destroy, params: { id: answer, question_id: answer.question }
+        expect(response).to redirect_to question_path(answer.question)
+      end
     end
 
-    it 'redirect to index' do
-      delete :destroy, params: { id: answer, question_id: answer.question }
-      expect(response).to redirect_to question_path(answer.question)
+    context 'Delete own answer' do
+      it 'deletes answer' do
+        expect { delete :destroy, params: { id: own_answer, question_id: own_answer.question } }.to change(Answer, :count).by(-1)
+      end
+
+      it 'redirects back to question' do
+        delete :destroy, params: { id: own_answer, question_id: own_answer.question }
+        expect(response).to redirect_to question_path(own_answer.question)
+      end
     end
   end
 end

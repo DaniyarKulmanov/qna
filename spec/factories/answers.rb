@@ -9,6 +9,7 @@ FactoryBot.define do
     body
     correct { false }
     question
+    association :author
 
     trait :wrong do
       body { nil }

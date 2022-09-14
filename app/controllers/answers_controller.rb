@@ -6,6 +6,8 @@ class AnswersController < ApplicationController
   expose :answer, parent: :question
 
   def create
+    answer.author = current_user
+
     if answer.save
       redirect_with 'Your answer successfully created'
     else
@@ -14,8 +16,12 @@ class AnswersController < ApplicationController
   end
 
   def destroy
-    answer.destroy
-    redirect_to question_path(question)
+    if answer.author == current_user
+      answer.destroy
+      redirect_to question_path(question)
+    else
+      redirect_with 'Only authored answers allowed for deletion'
+    end
   end
 
   private
@@ -26,5 +32,11 @@ class AnswersController < ApplicationController
 
   def redirect_with(notice)
     redirect_to question_path(question), notice: notice
+  end
+
+  def build_params
+    @answer = Answer.new(answer_params)
+    @answer.author = current_user
+    @answer
   end
 end
