@@ -9,13 +9,12 @@ feature 'User can delete only own question or answer', "
 " do
 
 
-  describe 'As authenticated user delete own' do
-
+  describe 'As authenticated' do
     given(:user) { create(:user) }
     given(:question) { create(:question, author: user) }
     given!(:answers) { create_list(:answer, 3, question: question, author: user) }
 
-    scenario 'answer' do
+    scenario 'able delete own answer' do
       sign_in(user)
       visit question_path(question)
 
@@ -26,7 +25,7 @@ feature 'User can delete only own question or answer', "
     end
 
 
-    scenario 'question' do
+    scenario 'able delete own question' do
       sign_in(user)
       visit questions_path
 
@@ -40,7 +39,7 @@ feature 'User can delete only own question or answer', "
     given(:question) { create(:question) }
     given!(:answers) { create_list(:answer, 3, question: question) }
 
-    scenario 'answer' do
+    scenario "unable delete someone else's answer" do
       sign_in(user)
       visit question_path(question)
 
@@ -62,8 +61,24 @@ feature 'User can delete only own question or answer', "
   end
 
   describe 'Unauthenticated user unable to delete' do
-    scenario 'answer'
-    scenario 'question'
+    given(:question) { create(:question) }
+    given!(:answers) { create_list(:answer, 3, question: question) }
+
+    scenario 'answer' do
+      visit question_path(question)
+
+      find('tr', text: question.answers.first.body).click_link('delete')
+
+      expect(page).to have_content I18n.t('devise.failure.unauthenticated')
+    end
+
+    scenario 'question' do
+      visit questions_path
+
+      find('tr', text: question.body).click_link('delete')
+
+      expect(page).to have_content I18n.t('devise.failure.unauthenticated')
+    end
   end
 
 end
