@@ -9,12 +9,12 @@ feature 'User can delete only own question or answer', "
 " do
 
 
-  describe 'As authenticated' do
+  describe 'As authenticated user able to delete own' do
     given(:user) { create(:user) }
     given(:question) { create(:question, author: user) }
     given!(:answers) { create_list(:answer, 3, question: question, author: user) }
 
-    scenario 'able delete own answer' do
+    scenario 'answer' do
       sign_in(user)
       visit question_path(question)
 
@@ -25,7 +25,7 @@ feature 'User can delete only own question or answer', "
     end
 
 
-    scenario 'able delete own question' do
+    scenario 'question' do
       sign_in(user)
       visit questions_path
 
@@ -34,12 +34,12 @@ feature 'User can delete only own question or answer', "
     end
   end
 
-  describe "As authenticated user unable delete someone else's" do
+  describe "As authenticated user unable to delete someone else's" do
     given(:user) { create(:user) }
     given(:question) { create(:question) }
     given!(:answers) { create_list(:answer, 3, question: question) }
 
-    scenario "unable delete someone else's answer" do
+    scenario "answer" do
       sign_in(user)
       visit question_path(question)
 
