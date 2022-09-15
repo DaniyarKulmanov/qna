@@ -8,5 +8,9 @@ table
       tr
         td= question.title
         td= question.body
+        td= link_to 'delete',
+                question_path(question),
+                method: :delete,
+                data: { confirm: 'confirm', name: question.body }
 p= questions.count
 p= link_to 'Ask question', new_question_path

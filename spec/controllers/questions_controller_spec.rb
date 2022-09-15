@@ -3,7 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
-  let(:question) { create(:question) }
   let(:user) { create(:user) }
 
   describe 'GET #index' do
@@ -21,6 +20,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #show' do
+    let(:question) { create(:question) }
 
     before { get :show, params: { id: question } }
 
@@ -55,6 +55,36 @@ RSpec.describe QuestionsController, type: :controller do
       it 're-renders new view' do
         post :create, params: { question: attributes_for(:question, :invalid) }
         expect(response).to render_template :new
+      end
+    end
+  end
+
+  describe 'DELETE #destroy' do
+    let!(:question) { create(:question) }
+    let!(:own_question) { create(:question, author: user) }
+
+    before { login(user) }
+
+    context "Delete some else's question" do
+      it 'unable to delete' do
+        expect { delete :destroy, params: { id: question } }.to change(Question, :count).by(0)
+        expect(flash[:notice]).to match('Only authored questions allowed for deletion')
+      end
+
+      it 'redirects back to questions' do
+        delete :destroy, params: { id: question }
+        expect(response).to redirect_to questions_path
+      end
+    end
+
+    context 'Delete own question' do
+      it 'deletes question' do
+        expect { delete :destroy, params: { id: own_question } }.to change(Question, :count).by(-1)
+      end
+
+      it 'redirects back to questions' do
+        delete :destroy, params: { id: own_question }
+        expect(response).to redirect_to questions_path
       end
     end
   end

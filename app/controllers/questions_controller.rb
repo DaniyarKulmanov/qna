@@ -23,6 +23,15 @@ class QuestionsController < ApplicationController
     end
   end
 
+  def destroy
+    if question.author == current_user
+      question.destroy
+      redirect_to questions_path
+    else
+      redirect_to questions_path, notice: 'Only authored questions allowed for deletion'
+    end
+  end
+
   private
 
   def question_params
