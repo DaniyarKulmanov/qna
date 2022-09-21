@@ -27,6 +27,7 @@ feature 'User can give answer to a question', "
       expect(page).to have_content 'Your answer successfully created'
       expect(page).to have_content answer.body
       expect(page).to have_content answer.correct
+      expect(current_path).to eq question_path(question)
     end
 
     scenario 'tries answer to question and see errors' do
