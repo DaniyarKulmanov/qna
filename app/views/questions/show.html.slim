@@ -4,7 +4,7 @@ h1= question.title
 p= question.body
 
 h1= 'Answer to question'
-= form_with model: [question, question.answers.build ], local: true do |f|
+= form_with model: [question, answer ], local: true do |f|
   = f.label :body
   = f.text_area :body
   = f.label :correct
