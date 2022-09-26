@@ -1,10 +1,11 @@
-= render 'shared/errors', resource: question
-
 h1= question.title
 p= question.body
 
 h1= 'Answer to question'
-= form_with model: [question, answer ], local: true do |f|
+.answers-errors
+  = render 'shared/errors', resource: answer
+
+= form_with model: [question, answer ], local: true, remote: true do |f|
   = f.label :body
   = f.text_area :body
   = f.label :correct

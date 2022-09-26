@@ -8,11 +8,7 @@ class AnswersController < ApplicationController
   def create
     answer.author = current_user
 
-    if answer.save
-      redirect_with 'Your answer successfully created'
-    else
-      redirect_with answer.errors.full_messages
-    end
+    redirect_with 'Your answer successfully created' if answer.save
   end
 
   def destroy

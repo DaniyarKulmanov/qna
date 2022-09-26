@@ -10,7 +10,7 @@ feature 'User can give answer to a question', "
 
   given(:question) { create(:question) }
 
-  describe 'Authenticated user' do
+  describe 'Authenticated user', js: true, focus: true do
     given(:user) { create(:user) }
     given(:answer) { create(:answer) }
 
