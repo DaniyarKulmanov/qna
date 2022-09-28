@@ -7,7 +7,6 @@ class AnswersController < ApplicationController
 
   def create
     answer.author = current_user
-
     redirect_with 'Your answer successfully created' if answer.save
   end
 
