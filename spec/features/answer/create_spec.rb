@@ -24,9 +24,7 @@ feature 'User can give answer to a question', "
       check('Correct').set(answer.correct)
       click_on 'Answer'
 
-      expect(page).to have_content 'Your answer successfully created'
       expect(page).to have_content answer.body
-      expect(page).to have_content answer.correct
       expect(current_path).to eq question_path(question)
     end
 

@@ -12,11 +12,5 @@ h1= 'Answer to question'
   = f.check_box :correct
   = f.submit 'Answer'
 
-table
-  thead
-    tr
-      th 'Body'
-      th 'Correct'
-      th 'Delete'
-  tbody
-    = render question.answers
+.answers
+  = render question.answers
