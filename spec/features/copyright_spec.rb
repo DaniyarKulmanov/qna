@@ -9,7 +9,7 @@ feature 'User can delete only own question or answer', "
 " do
 
 
-  describe 'As authenticated user able to delete own' do
+  describe 'As authenticated user able to delete own', focus: true do
     given(:user) { create(:user) }
     given(:question) { create(:question, author: user) }
     given!(:answers) { create_list(:answer, 3, question: question, author: user) }
@@ -19,7 +19,8 @@ feature 'User can delete only own question or answer', "
       visit question_path(question)
 
       question.answers.each do |answer|
-        find('tr', text: answer.body).click_link('delete')
+
+        find("tr[id=#{answer.id}]").click_link('delete')
         expect(page).not_to have_content answer.body
       end
     end
@@ -34,7 +35,7 @@ feature 'User can delete only own question or answer', "
     end
   end
 
-  describe "As authenticated user unable to delete someone else's" do
+  describe "As authenticated user unable to delete someone else's", focus: true do
     given(:user) { create(:user) }
     given(:question) { create(:question) }
     given!(:answers) { create_list(:answer, 3, question: question) }
