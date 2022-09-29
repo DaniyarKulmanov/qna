@@ -1,1 +1,7 @@
-p= answer.body
+tr id= answer.id
+  td= answer.body
+  td= answer.correct
+  td= link_to 'delete',
+          question_path(answer.question),
+          method: :delete,
+          data: { confirm: 'confirm', name: answer.body }
