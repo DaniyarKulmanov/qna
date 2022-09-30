@@ -1,7 +1,16 @@
 tr id= answer.id
   td= answer.body
   td= answer.correct
+  - if user_signed_in?
+    td= link_to 'edit'
   td= link_to 'delete',
-          question_answer_path(question, answer),
+          answer_path(answer),
           method: :delete,
           data: { confirm: 'confirm', name: answer.body }
+
+  = form_with model: answer, local: false do |f|
+    = f.label :body
+    = f.text_area :body
+    = f.label :correct
+    = f.check_box :correct
+    = f.submit 'save'
