@@ -9,7 +9,7 @@ feature 'User can delete only own question or answer', "
 " do
 
 
-  describe 'As authenticated user able to delete own', focus: true do
+  describe 'As authenticated user able to delete own' do
     given(:user) { create(:user) }
     given(:question) { create(:question, author: user) }
     given!(:answers) { create_list(:answer, 3, question: question, author: user) }
@@ -35,7 +35,7 @@ feature 'User can delete only own question or answer', "
     end
   end
 
-  describe "As authenticated user unable to delete someone else's", focus: true do
+  describe "As authenticated user unable to delete someone else's" do
     given(:user) { create(:user) }
     given(:question) { create(:question) }
     given!(:answers) { create_list(:answer, 3, question: question) }
