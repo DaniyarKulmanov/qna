@@ -2,9 +2,6 @@
 
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
-  expose :questions, -> { Question.all }
-  expose :question
-  expose :answer, -> { Answer.new }
 
   def create
     question.author = current_user

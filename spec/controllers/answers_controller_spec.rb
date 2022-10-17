@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
   let(:user) { create(:user) }
-  let!(:answer) { create(:answer) }
+  let(:answer) { create(:answer) }
 
   before { login(user) }
 
@@ -14,21 +14,41 @@ RSpec.describe AnswersController, type: :controller do
       it 'saves new answer to database' do
         expect { post :create, params: { answer: attributes_for(:answer), question_id: answer.question.id }, format: :js }.to change(Answer, :count).by(1)
       end
-      it 'redirects to question show view with success notice' do
+      it 'renders create template' do
         post :create, params: { answer: attributes_for(:answer), question_id: answer.question.id }, format: :js
         expect(response).to render_template :create
       end
     end
 
     context 'with invalid attributes' do
+      let!(:answer) { create(:answer) }
+
       it 'should not save answer with wrong attributes' do
         expect { post :create, params: { answer: attributes_for(:answer, :wrong), question_id: answer.question.id }, format: :js }.to_not change(Answer, :count)
       end
-      it 'render question show view with errors' do
+      it 'renders create template' do
         post :create, params: { answer: attributes_for(:answer, :wrong), question_id: answer.question.id }, format: :js
         expect(response).to render_template :create
       end
     end
+  end
+
+  describe 'PATCH #update' do
+    let!(:own_answer) { create(:answer, author: user) }
+
+    context 'with valid attributes' do
+      it 'changes answer attributes' do
+        patch :update, params: { id: answer, answer: { body: 'new body' }, question_id: answer.question }, format: :js
+        answer.reload
+        expect(answer.body).to eq 'new body'
+      end
+
+      it 'renders update view' do
+        patch :update, params: { id: answer, answer: { body: 'new body' }, question_id: answer.question }, format: :js
+        expect(response).to render_template :update
+      end
+    end
+
   end
 
   describe 'DELETE #destroy' do

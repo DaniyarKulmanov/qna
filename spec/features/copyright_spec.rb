@@ -19,7 +19,6 @@ feature 'User can delete only own question or answer', "
       visit question_path(question)
 
       question.answers.each do |answer|
-
         find("tr[id=#{answer.id}]").click_link('delete')
         expect(page).not_to have_content answer.body
       end
