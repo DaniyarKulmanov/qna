@@ -8,6 +8,10 @@ class QuestionsController < ApplicationController
     @questions = Question.all
   end
 
+  def show
+    @answer = Answer.new
+  end
+
   def create
     @question.author = current_user
 
