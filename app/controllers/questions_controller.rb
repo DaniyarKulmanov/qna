@@ -12,6 +12,10 @@ class QuestionsController < ApplicationController
     @answer = Answer.new
   end
 
+  def new
+    @question = Question.new
+  end
+
   def create
     @question.author = current_user
 
