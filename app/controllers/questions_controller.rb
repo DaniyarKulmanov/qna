@@ -12,13 +12,14 @@ class QuestionsController < ApplicationController
     @answer = Answer.new
   end
 
-  def edit; end
-
   def new
     @question = Question.new
   end
 
+  def edit; end
+
   def create
+    @question = Question.new(question_params)
     @question.author = current_user
 
     if @question.save

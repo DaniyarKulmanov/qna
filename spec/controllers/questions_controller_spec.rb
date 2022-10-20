@@ -66,7 +66,7 @@ RSpec.describe QuestionsController, type: :controller do
       end
       it 'redirects to show view' do
         post :create, params: { question: attributes_for(:question) }
-        expect(response).to redirect_to question_path(assigns(:exposed_question))
+        expect(response).to redirect_to question_path(assigns(:question))
         expect(flash[:notice]).to match('Your question successfully created')
       end
     end
