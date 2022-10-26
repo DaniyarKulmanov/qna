@@ -10,15 +10,19 @@ class AnswersController < ApplicationController
   end
 
   def update
-    @answer.update(answer_params)
+    if @answer.update(answer_params)
+      redirect_to question_path(@answer.question)
+    else
+      render :edit
+    end
   end
 
   def destroy
     if @answer.author == current_user
       @answer.destroy
-      redirect_to question_path(question)
+      redirect_to question_path(@answer.question)
     else
-      redirect_with 'Only authored answers allowed for deletion'
+      redirect_to question_path(@answer.question), notice: 'Only authored answers allowed for deletion'
     end
   end
 
@@ -26,10 +30,6 @@ class AnswersController < ApplicationController
 
   def answer_params
     params.require(:answer).permit(:body, :correct)
-  end
-
-  def redirect_with(notice)
-    redirect_to question_path(question), notice: notice
   end
 
   def set_answer

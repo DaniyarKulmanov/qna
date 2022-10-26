@@ -7,7 +7,6 @@ FactoryBot.define do
 
   factory :answer do
     body
-    correct { false }
     question
     association :author
 

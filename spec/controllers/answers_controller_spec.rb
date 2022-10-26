@@ -45,13 +45,14 @@ RSpec.describe AnswersController, type: :controller do
 
       it 'renders update view' do
         patch :update, params: { id: answer, answer: { body: 'new body' }, question_id: answer.question }, format: :js
-        expect(response).to render_template :update
+        expect(response).to redirect_to question_path(answer.question)
       end
     end
 
   end
 
   describe 'DELETE #destroy' do
+    let!(:answer) { create(:answer) }
     let!(:own_answer) { create(:answer, author: user) }
 
     context "Delete some else's answer" do
