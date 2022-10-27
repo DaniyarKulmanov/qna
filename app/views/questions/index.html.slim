@@ -4,7 +4,7 @@ table
       th 'Title'
       th 'Body'
   tbody
-    - questions.each do |question|
+    - @questions.each do |question|
       tr
         td= question.title
         td= question.body
@@ -12,5 +12,5 @@ table
                 question_path(question),
                 method: :delete,
                 data: { confirm: 'confirm', name: question.body }
-p= questions.count
+p= @questions.count
 p= link_to 'Ask question', new_question_path

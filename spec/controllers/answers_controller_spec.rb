@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
   let(:user) { create(:user) }
-  let(:answer) { create(:answer) }
+  let!(:answer) { create(:answer) }
 
   before { login(user) }
 
@@ -21,7 +21,6 @@ RSpec.describe AnswersController, type: :controller do
     end
 
     context 'with invalid attributes' do
-      let!(:answer) { create(:answer) }
 
       it 'should not save answer with wrong attributes' do
         expect { post :create, params: { answer: attributes_for(:answer, :wrong), question_id: answer.question.id }, format: :js }.to_not change(Answer, :count)
@@ -52,7 +51,6 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-    let!(:answer) { create(:answer) }
     let!(:own_answer) { create(:answer, author: user) }
 
     context "Delete some else's answer" do
