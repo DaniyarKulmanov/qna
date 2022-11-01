@@ -33,12 +33,4 @@ feature 'User can give answer to a question', "
       expect(page).to have_content "Body can't be blank"
     end
   end
-
-  scenario 'Unauthorized user tries answer to question', js: true do
-    visit question_path(question)
-
-    click_on 'Answer'
-
-    expect(page).to have_content I18n.t('devise.failure.unauthenticated')
-  end
 end
