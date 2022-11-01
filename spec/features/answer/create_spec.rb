@@ -21,7 +21,6 @@ feature 'User can give answer to a question', "
 
     scenario 'tries answer to question' do
       fill_in 'Body', with: answer.body
-      check('Correct').set(answer.correct)
       click_on 'Answer'
 
       expect(page).to have_content answer.body
@@ -35,10 +34,11 @@ feature 'User can give answer to a question', "
     end
   end
 
-  scenario 'Unauthorized user tries answer to question' do
+  scenario 'Unauthorized user tries answer to question', js: true do
     visit question_path(question)
 
     click_on 'Answer'
+
     expect(page).to have_content I18n.t('devise.failure.unauthenticated')
   end
 end

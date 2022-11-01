@@ -5,10 +5,11 @@ h1= 'Answer to question'
 
 .answer-errors
 
-= form_with model: [@question, @answer ], local: false do |f|
-  = f.label :body
-  = f.text_area :body
-  = f.submit 'Answer'
+- if user_signed_in?
+  = form_with model: [@question, @answer ], local: false do |f|
+    = f.label :body
+    = f.text_area :body
+    = f.submit 'Answer'
 
 table
   thead
