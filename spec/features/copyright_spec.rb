@@ -19,7 +19,7 @@ feature 'User can delete only own question or answer', "
       visit question_path(question)
 
       question.answers.each do |answer|
-        find('tr', text: answer.body).click_link('delete')
+        find("tr[id=#{answer.id}]").click_link('delete')
         expect(page).not_to have_content answer.body
       end
     end
@@ -67,9 +67,7 @@ feature 'User can delete only own question or answer', "
     scenario 'answer' do
       visit question_path(question)
 
-      find('tr', text: question.answers.first.body).click_link('delete')
-
-      expect(page).to have_content I18n.t('devise.failure.unauthenticated')
+      expect(page).to_not have_link 'delete'
     end
 
     scenario 'question' do

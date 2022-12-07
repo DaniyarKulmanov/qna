@@ -2,12 +2,11 @@
 
 FactoryBot.define do
   sequence :body do |n|
-    "MyText#{n}"
+    "MyAnswerText#{n}"
   end
 
   factory :answer do
     body
-    correct { false }
     question
     association :author
 
