@@ -2,7 +2,7 @@
 
 class AnswersController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_answer, only: %i[edit update destroy]
+  before_action :set_answer, only: %i[update destroy]
 
   def create
     @question = Question.find(params[:question_id])
@@ -13,6 +13,7 @@ class AnswersController < ApplicationController
 
   def update
     @answer.update(answer_params)
+    @question = @answer.question
   end
 
   def destroy
