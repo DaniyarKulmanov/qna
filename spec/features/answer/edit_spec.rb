@@ -12,10 +12,11 @@ feature 'User can edit his answer', "
   given!(:question) { create(:question) }
   given!(:answer) { create(:answer, question: question, author: user) }
 
-  scenario 'Unauthenticated user can not edit answer' do
+  scenario 'Unauthenticated user can not edit or delete answer' do
     visit questions_path(question)
 
-    expect(page).to_not have_link 'Edit'
+    expect(page).to_not have_link 'edit'
+    expect(page).to_not have_link 'delete'
   end
 
   describe 'Authenticated user' do
