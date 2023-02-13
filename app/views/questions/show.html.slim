@@ -11,10 +11,11 @@ h1= 'Answer to question'
     = f.text_area :body
     = f.submit 'Answer'
 
-table
-  thead
-    tr
-      th 'Body'
-      th 'Delete'
-  tbody class = 'answers'
-    = render @question.answers
+.answers
+  table
+    thead
+      tr
+        th 'Body'
+        th 'Delete'
+    tbody
+      = render @question.answers

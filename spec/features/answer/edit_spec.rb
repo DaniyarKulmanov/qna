@@ -19,15 +19,15 @@ feature 'User can edit his answer', "
     expect(page).to_not have_link 'delete'
   end
 
-  describe 'Authenticated user' do
-    scenario 'edits his answer', js: true do
+  describe 'Authenticated user', js: true do
+    scenario 'edits his answer' do
       sign_in(user)
       visit question_path(question)
 
-      click_on 'edit'
-
       within '.answers' do
-        fill_in 'Body', with: 'edited answer'
+        click_on 'edit'
+
+        fill_in 'Your answer', with: 'edited answer'
         click_on 'save'
 
         expect(page).to_not have_content answer.body
@@ -36,7 +36,20 @@ feature 'User can edit his answer', "
       end
     end
 
-    scenario 'edits his answer with errors'
+    scenario 'edits his answer with errors' do
+      # sign_in(user)
+      # visit question_path(question)
+      #
+      # click_on 'edit'
+      #
+      # within '.answers' do
+      #   fill_in 'Your answer', with: ''
+      #   click_on 'save'
+      #
+      #   expect(page).to have_content "Body can't be blank"
+      # end
+    end
+
     scenario "tries to edit other user's question"
   end
 end
