@@ -1,6 +1,6 @@
 tr id= answer.id
   td= answer.body
-  - if user_signed_in?
+  - if user_signed_in? && user_is_an_author?(answer.author)
 
     td= form_with model: answer, local: false, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |f|
       = f.label :body, 'Your answer'

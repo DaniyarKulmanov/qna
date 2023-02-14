@@ -42,8 +42,7 @@ feature 'User can delete only own question or answer', "
       visit question_path(question)
 
       question.answers.each do |answer|
-        find('tr', text: answer.body).click_link('delete')
-        expect(page).to have_content 'Only authored answers allowed for deletion'
+        expect(page).to_not have_link 'delete'
         expect(page).to have_content answer.body
       end
     end
