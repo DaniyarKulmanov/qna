@@ -21,7 +21,7 @@ feature 'User can sign up', "
     expect(page).to have_content I18n.t('devise.registrations.signed_up')
   end
 
-  scenario 'Registered user tries to sign up'do
+  scenario 'Registered user tries to sign up' do
     fill_in 'Email', with: user.email
     fill_in 'Password', with: user.password
     fill_in 'Password confirmation', with: user.password_confirmation

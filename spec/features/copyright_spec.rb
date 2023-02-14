@@ -8,7 +8,6 @@ feature 'User can delete only own question or answer', "
   I'd like to be able delete only own question or answer
 " do
 
-
   describe 'As authenticated user able to delete own' do
     given(:user) { create(:user) }
     given(:question) { create(:question, author: user) }
@@ -24,7 +23,6 @@ feature 'User can delete only own question or answer', "
       end
     end
 
-
     scenario 'question' do
       sign_in(user)
       visit questions_path
@@ -39,7 +37,7 @@ feature 'User can delete only own question or answer', "
     given(:question) { create(:question) }
     given!(:answers) { create_list(:answer, 3, question: question) }
 
-    scenario "answer" do
+    scenario 'answer' do
       sign_in(user)
       visit question_path(question)
 
