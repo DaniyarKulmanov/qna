@@ -19,12 +19,30 @@ feature 'User can edit his question', "
 
   describe 'Authenticated user', js: true do
     describe 'edits his' do
-      scenario 'question'
+      given!(:question) { create(:question, author: user) }
+
+      background do
+        sign_in(user)
+        visit questions_path
+      end
+
+      scenario 'question' do
+        within '.questions' do
+          click_on 'edit'
+
+          fill_in 'Your question', with: 'changed body'
+          click_on 'save'
+        end
+
+        expect(page).to_not have_content question.body
+        expect(page).to have_content 'changed body'
+        expect(page).to_not have_selector 'textarea'
+      end
       scenario 'question with errors'
     end
 
     describe "tries edit other user's" do
-      scenario 'question with errors'
+      scenario 'question'
     end
   end
 end
