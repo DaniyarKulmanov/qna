@@ -22,10 +22,12 @@ feature 'User can edit his answer', "
     describe 'edits his' do
       given!(:answer) { create(:answer, question: question, author: user) }
 
-      scenario 'answer' do
+      background do
         sign_in(user)
         visit question_path(question)
+      end
 
+      scenario 'answer' do
         within '.answers' do
           click_on 'edit'
 
@@ -39,9 +41,6 @@ feature 'User can edit his answer', "
       end
 
       scenario 'answer with errors' do
-        sign_in(user)
-        visit question_path(question)
-
         within '.answers' do
           click_on 'edit'
 
