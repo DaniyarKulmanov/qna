@@ -9,7 +9,7 @@ table
         td= question.title
         td= question.body
         td= link_to 'show', question_path(question)
-        - if user_signed_in?
+        - if user_signed_in? && user_is_an_author?(question.author)
           td= link_to 'delete',
                   question_path(question),
                   method: :delete,

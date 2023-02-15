@@ -13,8 +13,11 @@ feature 'User can delete only own question or answer', "
     given(:question) { create(:question, author: user) }
     given!(:answers) { create_list(:answer, 3, question: question, author: user) }
 
-    scenario 'answer' do
+    background do
       sign_in(user)
+    end
+
+    scenario 'answer' do
       visit question_path(question)
 
       question.answers.each do |answer|
@@ -24,7 +27,6 @@ feature 'User can delete only own question or answer', "
     end
 
     scenario 'question' do
-      sign_in(user)
       visit questions_path
 
       find('tr', text: question.body).click_link('delete')
@@ -37,8 +39,11 @@ feature 'User can delete only own question or answer', "
     given(:question) { create(:question) }
     given!(:answers) { create_list(:answer, 3, question: question) }
 
-    scenario 'answer' do
+    background do
       sign_in(user)
+    end
+
+    scenario 'answer' do
       visit question_path(question)
 
       question.answers.each do |answer|
@@ -48,12 +53,9 @@ feature 'User can delete only own question or answer', "
     end
 
     scenario 'question' do
-      sign_in(user)
       visit questions_path
 
-      find('tr', text: question.body).click_link('delete')
-      expect(page).to have_content 'Only authored questions allowed for deletion'
-      expect(page).to have_content question.body
+      expect(page).to_not have_link 'delete'
     end
   end
 
