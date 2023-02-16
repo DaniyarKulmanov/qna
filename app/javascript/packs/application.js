@@ -14,3 +14,4 @@ Turbolinks.start()
 ActiveStorage.start()
 
 require("utilities/answers")
+require("utilities/questions")
