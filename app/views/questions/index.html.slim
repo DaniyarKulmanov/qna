@@ -1,18 +1,11 @@
-table
-  thead
-    tr
-      th 'Title'
-      th 'Body'
-  tbody
-    - @questions.each do |question|
+.questions
+  table
+    thead
       tr
-        td= question.title
-        td= question.body
-        td= link_to 'show', question_path(question)
-        - if user_signed_in? && user_is_an_author?(question.author)
-          td= link_to 'delete',
-                  question_path(question),
-                  method: :delete,
-                  data: { confirm: 'confirm', name: question.body }
+        th 'Title'
+        th 'Body'
+    tbody
+      = render @questions
+
 p= @questions.count
 p= link_to 'Ask question', new_question_path
