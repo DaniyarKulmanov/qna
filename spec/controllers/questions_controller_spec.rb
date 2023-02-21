@@ -108,16 +108,17 @@ RSpec.describe QuestionsController, type: :controller do
     end
 
     context 'with invalid attributes' do
-      before { patch :update, params: { id: question, question: attributes_for(:question, :invalid) } }
+      before { patch :update, params: { id: question, question: attributes_for(:question, :invalid) }, format: :js }
 
       it 'does not change question' do
-        question.reload
-        expect(question.title).to eq question.title
-        expect(question.body).to eq question.body
+        expect do
+          patch :update, params: { id: question, question: attributes_for(:question, :invalid) },
+                         format: :js
+        end.to_not change(question, :body) and change(question, :title)
       end
 
-      it 're-renders edit view' do
-        expect(response).to render_template :edit
+      it 'renders update view' do
+        expect(response).to render_template :update
       end
     end
   end
