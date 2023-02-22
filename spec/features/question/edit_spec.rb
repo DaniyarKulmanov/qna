@@ -38,7 +38,19 @@ feature 'User can edit his question', "
         expect(page).to have_content 'changed body'
         expect(page).to_not have_selector 'textarea'
       end
-      scenario 'question with errors'
+
+      scenario 'question with errors' do
+        within '.questions' do
+          click_on 'edit'
+
+          fill_in 'Your title', with: ''
+          fill_in 'Your question', with: ''
+          click_on 'save'
+        end
+
+        expect(page).to have_content "Title can't be blank"
+        expect(page).to have_content "Body can't be blank"
+      end
     end
 
     describe "tries edit other user's" do
