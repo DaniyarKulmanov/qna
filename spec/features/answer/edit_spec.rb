@@ -54,7 +54,7 @@ feature 'User can edit his answer', "
     describe "tries edit other user's" do
       given!(:answer) { create(:answer, question: question) }
 
-      scenario 'answer with errors' do
+      scenario 'answer' do
         sign_in(user)
         visit question_path(question)
 

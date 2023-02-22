@@ -54,7 +54,16 @@ feature 'User can edit his question', "
     end
 
     describe "tries edit other user's" do
-      scenario 'question'
+      given!(:question) { create(:question) }
+
+      scenario 'question' do
+        sign_in(user)
+        visit questions_path
+
+        within '.questions' do
+          expect(page).to_not have_link 'edit'
+        end
+      end
     end
   end
 end
