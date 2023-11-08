@@ -2,41 +2,36 @@
 
 class AnswersController < ApplicationController
   before_action :authenticate_user!
-  expose :question, -> { Question.find(params[:question_id]) }
-  expose :answer, parent: :question
+  before_action :set_answer, only: %i[update destroy]
 
   def create
-    answer.author = current_user
+    @question = Question.find(params[:question_id])
+    @answer = @question.answers.build(answer_params)
+    @answer.author = current_user
+    @answer.save
+  end
 
-    if answer.save
-      redirect_with 'Your answer successfully created'
-    else
-      redirect_with answer.errors.full_messages
-    end
+  def update
+    @answer.update(answer_params)
+    @question = @answer.question
   end
 
   def destroy
-    if answer.author == current_user
-      answer.destroy
-      redirect_to question_path(question)
+    if @answer.author == current_user
+      @answer.destroy
+      redirect_to question_path(@answer.question)
     else
-      redirect_with 'Only authored answers allowed for deletion'
+      redirect_to question_path(@answer.question), notice: 'Only authored answers allowed for deletion'
     end
   end
 
   private
 
   def answer_params
-    params.require(:answer).permit(:body, :correct)
+    params.require(:answer).permit(:body)
   end
 
-  def redirect_with(notice)
-    redirect_to question_path(question), notice: notice
-  end
-
-  def build_params
-    @answer = Answer.new(answer_params)
-    @answer.author = current_user
-    @answer
+  def set_answer
+    @answer = Answer.find(params[:id])
   end
 end

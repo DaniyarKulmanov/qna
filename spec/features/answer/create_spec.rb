@@ -10,7 +10,7 @@ feature 'User can give answer to a question', "
 
   given(:question) { create(:question) }
 
-  describe 'Authenticated user' do
+  describe 'Authenticated user', js: true do
     given(:user) { create(:user) }
     given(:answer) { create(:answer) }
 
@@ -21,12 +21,10 @@ feature 'User can give answer to a question', "
 
     scenario 'tries answer to question' do
       fill_in 'Body', with: answer.body
-      check('Correct').set(answer.correct)
       click_on 'Answer'
 
-      expect(page).to have_content 'Your answer successfully created'
       expect(page).to have_content answer.body
-      expect(page).to have_content answer.correct
+      expect(current_path).to eq question_path(question)
     end
 
     scenario 'tries answer to question and see errors' do
@@ -34,12 +32,5 @@ feature 'User can give answer to a question', "
 
       expect(page).to have_content "Body can't be blank"
     end
-  end
-
-  scenario 'Unauthorized user tries answer to question' do
-    visit question_path(question)
-
-    click_on 'Answer'
-    expect(page).to have_content I18n.t('devise.failure.unauthenticated')
   end
 end

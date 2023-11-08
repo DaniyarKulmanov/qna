@@ -4,14 +4,14 @@ require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
   let(:user) { create(:user) }
+  let(:question) { create(:question) }
 
   describe 'GET #index' do
     let(:questions) { create_list(:question, 3) }
-
     before { get :index }
 
     it 'populates an array of all questions' do
-      expect(assigns(:exposed_questions)).to match_array(questions)
+      expect(assigns(:questions)).to match_array(questions)
     end
 
     it 'renders index view' do
@@ -20,16 +20,40 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #show' do
-    let(:question) { create(:question) }
-
     before { get :show, params: { id: question } }
 
-    it 'assigns the requested question to @question' do
-      expect(assigns(:exposed_question)).to eq question
+    it 'assign the requested question to @question' do
+      expect(assigns(:question)).to eq question
     end
 
     it 'renders show view' do
       expect(response).to render_template :show
+    end
+  end
+
+  describe 'GET #new' do
+    before { login(user) }
+    before { get :new }
+
+    it 'assign a new Question to @question' do
+      expect(assigns(:question)).to be_a_new(Question)
+    end
+
+    it 'renders new view' do
+      expect(response).to render_template :new
+    end
+  end
+
+  describe 'GET #edit' do
+    before { login(user) }
+    before { get :edit, params: { id: question } }
+
+    it 'edits a question' do
+      expect(assigns(:question)).to eq question
+    end
+
+    it 'renders show view' do
+      expect(response).to render_template :edit
     end
   end
 
@@ -42,19 +66,59 @@ RSpec.describe QuestionsController, type: :controller do
       end
       it 'redirects to show view' do
         post :create, params: { question: attributes_for(:question) }
-        expect(response).to redirect_to question_path(assigns(:exposed_question))
+        expect(response).to redirect_to question_path(assigns(:question))
         expect(flash[:notice]).to match('Your question successfully created')
       end
     end
 
     context 'with invalid attributes' do
       it 'should not save questions with wrong attributes' do
-        expect { post :create, params: { question: attributes_for(:question, :invalid) } }.to_not change(Question, :count)
+        expect do
+          post :create, params: { question: attributes_for(:question, :invalid) }
+        end.to_not change(Question, :count)
       end
 
       it 're-renders new view' do
         post :create, params: { question: attributes_for(:question, :invalid) }
         expect(response).to render_template :new
+      end
+    end
+  end
+
+  describe 'PATCH #update' do
+    before { login(user) }
+
+    context 'with valid attributes' do
+      it 'assigns the requested question to @question' do
+        patch :update, params: { id: question, question: attributes_for(:question) }, format: :js
+        expect(assigns(:question)).to eq question
+      end
+
+      it 'changes question attributes' do
+        patch :update, params: { id: question, question: { title: 'new title', body: 'new body' } }, format: :js
+        question.reload
+        expect(question.title).to eq 'new title'
+        expect(question.body).to eq 'new body'
+      end
+
+      it 'renders update view' do
+        patch :update, params: { id: question, question: { title: 'new title', body: 'new body' } }, format: :js
+        expect(response).to render_template :update
+      end
+    end
+
+    context 'with invalid attributes' do
+      before { patch :update, params: { id: question, question: attributes_for(:question, :invalid) }, format: :js }
+
+      it 'does not change question' do
+        expect do
+          patch :update, params: { id: question, question: attributes_for(:question, :invalid) },
+                         format: :js
+        end.to_not change(question, :body) and change(question, :title)
+      end
+
+      it 'renders update view' do
+        expect(response).to render_template :update
       end
     end
   end

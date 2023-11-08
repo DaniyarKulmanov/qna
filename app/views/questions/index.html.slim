@@ -1,16 +1,13 @@
-table
-  thead
-    tr
-      th 'Title'
-      th 'Body'
-  tbody
-    - questions.each do |question|
+.question-errors
+
+.questions
+  table
+    thead
       tr
-        td= question.title
-        td= question.body
-        td= link_to 'delete',
-                question_path(question),
-                method: :delete,
-                data: { confirm: 'confirm', name: question.body }
-p= questions.count
+        th 'Title'
+        th 'Body'
+    tbody
+      = render @questions
+
+p= @questions.count
 p= link_to 'Ask question', new_question_path
